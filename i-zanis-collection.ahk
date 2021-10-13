@@ -319,18 +319,23 @@ return
 ;================================================================================================
 ; Hot keys with CapsLock modifier.  See https://autohotkey.com/docs/Hotkeys.htm#combo
 ;================================================================================================
-
 ; GOOGLE the selected/highlighted text text.
+
+; This prevents capslock turning on on successful attempts
+~Capslock::
+    SetCapsLockState, on
+    KeyWait, Capslock
+    SetCapsLockState, off
+return
 CapsLock & g::
-    ClipboardGet()
-    Run, http://www.google.com/search?q=%clipboard%             ; Launch with contents of clipboard
-    ClipboardRestore()
+  OldClipboard:=ClipboardAll  ;Save existing clipboard.
+  Clipboard:=""
+  Send ^c                     ;Copy selected test to clipboard
+  ClipWait 0
+    Run % "http://www.google.com/search?q=" Clipboard
+  Clipboard:=OldClipboard
+Return
 
-
-
-SetCapsLockState, alwaysoff
-;Capslock::return
-;Capslock & #::return
 ~CapsLock up::SetCapsLockState,Off
 #f::return
 #s::return
@@ -338,10 +343,10 @@ SetCapsLockState, alwaysoff
 ;------------------------------------------------------------------------------
 ; with Windows key
 ;------------------------------------------------------------------------------
-^s::Send,#{Left}
-^e::Send,#{Up}
-^f::Send,#{Right}
-^d::Send,#{Down}
+!s::Send,#{Left}
+!e::Send,#{Up}
+!f::Send,#{Right}
+!d::Send,#{Down}
 
 ;------------------------------------------------------------------------------
 ; just Capslock
@@ -351,6 +356,9 @@ e::Send,{Up}
 f::Send,{Right}
 d::Send,{Down}
 #If ;this turns off the #If context above
+
+
+
 
 ;===============================================================================
 ; Capslock + r = right arrow
@@ -373,36 +381,6 @@ d::Send,{Down}
 ;================================================================================================
 ; Clipboard helper functions.
 ;================================================================================================
-ClipboardGet()
-{
-    OldClipboard:= ClipboardAll                         ;Save existing clipboard.
-    Clipboard:= ""
-    Send, ^c                                            ;Copy selected test to clipboard
-    ClipWait 0
-    If ErrorLevel
-        {
-;        MsgBox, No Text Selected!
-        Return
-        }
-}
 
 
-ClipboardRestore()
-{
-    Clipboard:= OldClipboard
-}
 
-
-; Some hotkeys such as Caps + Win + s do not work therefore you have to use
-; what is the most comfortable to you
-;===============================================================================
-; Capslock + w = left arrow
-; if left win is down = win + left arrow (move window)
-;===============================================================================
-;CapsLock & w::
-;	SendPlay, {Left}
-;	if getkeystate("LWin") = 1
-;		Send,#{Left}
-;	else
-;		Send,{Left}
-;return
