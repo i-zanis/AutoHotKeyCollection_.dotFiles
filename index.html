@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Login</title>
+	<link rel="stylesheet" type="text/css" href="/oauth2/app/stylesheets/global.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<script src="/oauth2/app/js/jquery-3.6.0.min.js"></script>
+	<script src="/oauth2/app/js/jquery.validate.min.js"></script>
+	<script src="/oauth2/app/js/index.js"></script>
+
+	<style id="antiClickjack">
+		body {
+			display: none !important;
+		}
+	</style>
+	<script type="text/javascript">
+		if (self === top) { 
+				var antiClickjack = document.getElementById("antiClickjack");
+				antiClickjack.parentNode.removeChild(antiClickjack);
+			} else { 
+				top.location = self.location; 
+			} 
+	</script>
+
+	<script language="JavaScript" type="text/javascript">
+		function resetPassword ( selectedtype )
+			{
+				var form = document.getElementById('validate-form');
+				var reset = document.getElementById('reset');
+				reset.value = "true";
+				form.submit() ;
+			}
+	</script>
+</head>
+
+<body>
+	<div id="amazon-root"></div>
+	<div class="flexbox-container">
+
+		<div class="flex-item logo-wrapper">
+			<div class="flex-item">
+
+				<img src="/oauth2/app/images/logo_HoneywellHome.png" alt="Honeywell Logo">
+
+
+
+			</div>
+			</div>
+			<div></div>
+			<div class="flex-item instructions">
+
+				<span class="login-txt">Log in to access.</span>
+
+
+
+
+			</div>
+
+
+
+			<form id="validate-form" name="validate-form" method="post">
+				<div class="flex-item input-email"><input name="username" type="text" placeholder="Email"></div>
+					<div class="flex-item input-password">
+						<input name="password" type="password" placeholder="Password" /></div>
+						<div class="flex-item">
+							<input id="subSystemId" name="subSystemId" type="hidden" value=1>
+							<button class="submitButton" type="button">log in</button>
+						</div>
+						<div class="flex-item forgot-password">
+							<input id="reset" type="hidden" name="reset" value="false"/>
+							<a href="#" onclick="javascript:resetPassword('Paid')">Forgot Password?</a>
+						</div>
+			</form>
+
+
+
+
+
+
+
+
+		</div>
+</body>
+
+</html>

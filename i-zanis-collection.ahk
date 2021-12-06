@@ -11,14 +11,10 @@ SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
   ;#Space::WinSet, AlwaysOnTop, Toggle, A
   ;return
 
-
-
 ;----------------------------------------------------------------------------
   ;AutoCorrect
 
   ;::}ahk::autohotkey
-
-
 
   ;----------------------------------------------------------------------------
   ;Transparency toggle, Scroll Lock
@@ -31,8 +27,6 @@ SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
     WinSet, Transparent, OFF, A
   }
 return
-
-
 
 ;----------------------------------------------------------------------------
 ;NumPad Shortcuts, Ctrl+NumPad
@@ -73,43 +67,7 @@ return
   run, "Notepad.exe"
 return
 
-;I have other ones, but you get the idea, just simply running apps or websites
-
-
-
-;----------------------------------------------------------------------------
-;Chrome Incognito, Pause/Break
-
-;Pause::
-  ;run, "chrome.exe" -incognito
-  ;return
-
-  ;Pause/Break key to close the active window
-  ;Pause::WinClose, A
-  ;
-  ;YouTube Incognito
-  ;Pause & Home::
-  ;Run "chrome.exe" -incognito "https://www.youtube.com"
-  ;return
-
-
-
-  ;----------------------------------------------------------------------------
-  ;Volume control, Alt+Scroll wheel (and Mbutton)
-
-  ;Alt & WheelUp::Volume_Up
-  ;Alt & WheelDown::Volume_Down
-  ;Alt & MButton::Volume_Mute
-
-
-  ;
-  ;----------------------------------------------------------------------------
-  ;Suspend hotkeys
-  ;!s::
-  ;suspend, toggle
-  ;return
-
-
+;
 
   ;----------------------------------------------------------------------------
   ;Fixing/repurposing Fn+function keys
@@ -149,8 +107,6 @@ return
   ;^f1::FileRecycleEmpty
   ;return
 
-
-
   ;----------------------------------------------------------------------------
   ;Quicker Alt tab, Caps Lock (I mainly used it for quickly switching between half
   ;life and a half life guide)
@@ -163,8 +119,6 @@ return
   ;Send {Alt Up}
   ;return
 
-
-
   ;----------------------------------------------------------------------------
   ;Function keys to maximize and minimize the active window
 
@@ -173,8 +127,6 @@ return
 
   ;f8::WinMaximize, A
   ;return
-
-
 
   ;----------------------------------------------------------------------------
   ;Auto greater and lesser than for html, and since this one sends both, you
@@ -188,8 +140,6 @@ return
   ;sleep 0010
   ;send, {Left}
   ;return
-
-
 
   ;----------------------------------------------------------------------------
   ;Volume mixer, f7 opens it, if it's not active it recalls it, if its active,
@@ -294,12 +244,6 @@ return
   ;    return
   ;-------------------------------------------------------------------------------
 
-
-
-
-
-
-
 ;================================================================================================
 ;  CapsLock processing.  Must double tap CapsLock to toggle CapsLock mode on or off.
 ;================================================================================================
@@ -313,7 +257,6 @@ return
 ;        SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"  ; Toggle the state of CapsLock LED
 ;        }
 ;return
-
 
 
 ;================================================================================================
@@ -356,8 +299,6 @@ e::Send,{Up}
 f::Send,{Right}
 d::Send,{Down}
 #If ;this turns off the #If context above
-
-
 
 
 ;===============================================================================
