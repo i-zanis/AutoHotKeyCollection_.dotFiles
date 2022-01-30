@@ -28,132 +28,8 @@ SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
   }
 return
 
-;----------------------------------------------------------------------------
-;NumPad Shortcuts, Ctrl+NumPad
-
-#NumPad1::
-  Run,https://www.youtube.com
-return
-
-#NumPad2::
-  Run,https://www.netflix.com/browse
-return
-
-#NumPad3::
-  Run,https://www.netflix.com/browse
-return
-
-#NumPad4::
-  Run,https://www.netflix.com/browse
-return
-
-#NumPad5::
-  Run,https://www.netflix.com/browse
-return
-
-#NumPad6::
-  Run,https://www.netflix.com/browse
-return
-
-#NumPad7::
-  run, "cmd.exe"
-return
-
-#NumPad8::
-  run, "Notepad.exe"
-return
-
-#NumPad9::
-  run, "Notepad.exe"
-return
-
-;
-
-  ;----------------------------------------------------------------------------
-  ;Fixing/repurposing Fn+function keys
-
-  ;My keyboard is the Red Dragon Mitra K551
-
-  ;Fn+F1 sends you to Spotify instead of windows media player
-  ;Launch_Media::
-  ;Run,Spotify.exe
-  ;return
-
-  ;Fn+F9 sends you to Gmail instead of Outlook
-  ;Launch_Mail::
-  ;Run, "https://mail.google.com"
-  ;return
-
-  ;Fn+F10 basically does the same thing it did before, mine stopped working, I think
-  ;something to do with the accounts
-  ;Browser_Home::
-  ;Run, "chrome.exe"
-  ;return
-
-  ;Fn+F12 sends you to google drive instead of searching (Ctrl+f or even F3 are more
-  ;reliable for searching, at leat on chrome)
-  ;Browser_Search::
-  ;run, https://drive.google.com/drive
-  ;return
 
 
-
-  ;----------------------------------------------------------------------------
-  ;Other random ideas not on my main script
-  ;----------------------------------------------------------------------------
-
-  ;Emptying recycle bin with a shortcut
-
-  ;^f1::FileRecycleEmpty
-  ;return
-
-  ;----------------------------------------------------------------------------
-  ;Quicker Alt tab, Caps Lock (I mainly used it for quickly switching between half
-  ;life and a half life guide)
-
-  ;CapsLock::
-  ;send {Alt Down}
-  ;sleep 0030
-  ;send {Tab}
-  ;sleep 0010
-  ;Send {Alt Up}
-  ;return
-
-  ;----------------------------------------------------------------------------
-  ;Function keys to maximize and minimize the active window
-
-  ;f7::WinMinimize, A
-  ;return
-
-  ;f8::WinMaximize, A
-  ;return
-
-  ;----------------------------------------------------------------------------
-  ;Auto greater and lesser than for html, and since this one sends both, you
-  ;could make a script that instead of sending greater than, shift+< would send ,
-  ;as a closing tag
-
-  ;$<::
-  ;send, <
-  ;sleep 0010
-  ;send, >
-  ;sleep 0010
-  ;send, {Left}
-  ;return
-
-  ;----------------------------------------------------------------------------
-  ;Volume mixer, f7 opens it, if it's not active it recalls it, if its active,
-  ;it closes it
-
-  ;#MaxThreadsPerHotkey 2
-  ;SetTitleMatchMode, 2
-
-  ;F7::
-  ;Run, "SndVol.exe"
-  ;return
-  ;
-  ;#IfWinActive Mezclador
-  ;    F7::WinClose, A
 
   launchOrSwitchGimp()
   {
@@ -244,26 +120,6 @@ return
   ;    return
   ;-------------------------------------------------------------------------------
 
-;================================================================================================
-;  CapsLock processing.  Must double tap CapsLock to toggle CapsLock mode on or off.
-;================================================================================================
-; Must double tap CapsLock to toggle CapsLock mode on or off.
-
-;CapsLock::
-;    KeyWait, CapsLock                                                   ; Wait forever until Capslock is released.
-;    KeyWait, CapsLock, D T0.2                                           ; ErrorLevel = 1 if CapsLock not down within 0.2 seconds.
-;    if ((ErrorLevel = 0) && (A_PriorKey = "CapsLock") )                 ; Is a double tap on CapsLock?
-;        {
-;        SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"  ; Toggle the state of CapsLock LED
-;        }
-;return
-
-
-;================================================================================================
-; Hot keys with CapsLock modifier.  See https://autohotkey.com/docs/Hotkeys.htm#combo
-;================================================================================================
-; GOOGLE the selected/highlighted text text.
-
 ; This prevents capslock turning on on successful attempts
 ~Capslock::
     SetCapsLockState, on
@@ -286,42 +142,116 @@ Return
 ;------------------------------------------------------------------------------
 ; with Windows key
 ;------------------------------------------------------------------------------
-!s::Send,#{Left}
-!e::Send,#{Up}
-!f::Send,#{Right}
-!d::Send,#{Down}
+; These move the windows
+!s::Send,#{Left}     ;win + arrow left
+!e::Send,#{Up}       ;win + arrow up
+!f::Send,#{Right}    ;win + arrow right
+!d::Send,#{Down}     ;win + arrow down
+return
 
 ;------------------------------------------------------------------------------
 ; just Capslock
 ;------------------------------------------------------------------------------
-s::Send,{Left}
-e::Send,{Up}
-f::Send,{Right}
-d::Send,{Down}
-#If ;this turns off the #If context above
+s::Send,{Left}              ;arrow left
+e::Send,{Up}                ;arrow up
+f::Send,{Right}             ;arrow right
+d::Send,{Down}              ;arrow down
+; Play/Pause videos eg. Youtube on a separate inactive window
+q::Send,{Media_Play_Pause}
+1:: Run, https://online.uwl.ac.uk/ultra/courses/_174092_1/cl/outline
+2:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
+3:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
+4::
+5:: Run,https://github.com/Orange-Power-Ltd/orange-power-mob/projects/1
+6:: Run,https://github.com/issues/assigned
+7:: Run,https://www.github.com
+8:: Run,https://www.youtube.com
+9:: Run, https://www.linkedin.com
+0::
+#If ; turns off the #If context above
+ ;------------------------------------------------------------------------------
 
 
-;===============================================================================
-; Capslock + r = right arrow
-; if left win is down = win + right arrow (move window)
-;===============================================================================
-;CapsLock & r::
-;	SendPlay, {Right}
-;	if getkeystate("LWin") = 1
-;		Send,#{Right}
-;	else
-;		Send,{Right}
-;return
+  ;Fixing/repurposing Fn+function keys
+
+
+  ;Fn+F1 sends you to Spotify instead of windows media player
+  ;Launch_Media::
+  ;Run,Spotify.exe
+  ;return
+
+  ;Fn+F9 sends you to Gmail instead of Outlook
+  ;Launch_Mail::
+  ;Run, "https://mail.google.com"
+  ;return
+
+  ;Fn+F10 basically does the same thing it did before, mine stopped working, I think
+  ;something to do with the accounts
+  ;Browser_Home::
+  ;Run, "chrome.exe"
+  ;return
+
+  ;Fn+F12 sends you to google drive instead of searching (Ctrl+f or even F3 are more
+  ;reliable for searching, at leat on chrome)
+  ;Browser_Search::
+  ;run, https://drive.google.com/drive
+  ;return
 
 
 
-;CapsLock & #j::
-;Send, {Down}
-;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  ;----------------------------------------------------------------------------
+  ;Other random ideas not on my main script
+  ;----------------------------------------------------------------------------
 
-;================================================================================================
-; Clipboard helper functions.
-;================================================================================================
+  ;Emptying recycle bin with a shortcut
 
+  ;^f1::FileRecycleEmpty
+  ;return
 
+  ;----------------------------------------------------------------------------
+  ;Quicker Alt tab, Caps Lock (I mainly used it for quickly switching between half
+  ;life and a half life guide)
 
+  ;CapsLock::
+  ;send {Alt Down}
+  ;sleep 0030
+  ;send {Tab}
+  ;sleep 0010
+  ;Send {Alt Up}
+  ;return
+
+  ;----------------------------------------------------------------------------
+  ;Function keys to maximize and minimize the active window
+
+  ;f7::WinMinimize, A
+  ;return
+
+  ;f8::WinMaximize, A
+  ;return
+
+  ;----------------------------------------------------------------------------
+  ;Auto greater and lesser than for html, and since this one sends both, you
+  ;could make a script that instead of sending greater than, shift+< would send ,
+  ;as a closing tag
+
+  ;$<::
+  ;send, <
+  ;sleep 0010
+  ;send, >
+  ;sleep 0010
+  ;send, {Left}
+  ;return
+
+  ;----------------------------------------------------------------------------
+  ;Volume mixer, f7 opens it, if it's not active it recalls it, if its active,
+  ;it closes it
+
+  ;#MaxThreadsPerHotkey 2
+  ;SetTitleMatchMode, 2
+
+  ;F7::
+  ;Run, "SndVol.exe"
+  ;return
+  ;
+  ;#IfWinActive Mezclador
+  ;    F7::WinClose, A
