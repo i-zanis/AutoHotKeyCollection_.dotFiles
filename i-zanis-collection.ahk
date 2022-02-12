@@ -36,9 +36,7 @@ return
   }
 return
 
-
-
-
+; Get Gimp
   launchOrSwitchGimp()
   {
     IfWinExist ahk_class ahk_class gdkWindowToplevel
@@ -49,10 +47,10 @@ return
     }
     Return
   }
-
   #z::launchOrSwitchGimp()
   ;    return
 
+; Get Figma
   launchOrSwitchFigma()
   {
     IfWinExist ahk_exe Figma.exe
@@ -63,10 +61,10 @@ return
     }
     Return
   }
-
   #x::launchOrSwitchFigma()
   ;    return
 
+; Get Postman
   launchOrSwitchPostman()
   {
     IfWinExist ahk_exe Postman.exe
@@ -80,23 +78,22 @@ return
   #c::launchOrSwitchPostman()
   ;    return
 
-  ;-------------------------------------------------------------------------------
+; Get NeoVim
   launchOrSwitchNeovim()
   {
     IfWinExist ahk_exe nvim.exe
     {
       WinActivateBottom, ahk_exe nvim.exe
     }else  {
-      Run "C:\tools\neovim\Neovim\bin\nvim.exe"
+      Run "C:\tools\8neovim\Neovim\bin\nvim.exe"
     }
     Return
   }
-
   #q::launchOrSwitchNeovim()
   ;    return
-  ;-------------------------------------------------------------------------------
 
-  ;-------------------------------------------------------------------------------
+; Get Windows Terminal
+; Use this don't rely on buggy PowerToys or default that opens 1+ instances
   launchOrSwitchWT()
   {
     IfWinExist ahk_exe windowsterminal.exe
@@ -107,12 +104,15 @@ return
     }
     Return
   }
-
-  #t::launchOrSwitchWT()
+#t::launchOrSwitchWT()
   ;    return
-  ;-------------------------------------------------------------------------------
 
-  ;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+; Get Vivaldi
+; Use as a second browser window to avoid pressing the default Win + Number
+; (on taskbar) multiple times to access 2-3 individual windows spread on a
+; widescreen.
+;-------------------------------------------------------------------------------
   launchOrSwitchVivaldi()
   {
     IfWinExist ahk_exe vivaldi.exe
@@ -123,8 +123,25 @@ return
     }
     Return
   }
-
   ^#2::launchOrSwitchVivaldi()
+  ;    return
+
+;-------------------------------------------------------------------------------
+; Get MailSpring
+; Use email manager to avoid loading times on Gmail with multiple
+; extensions on Chrome
+;-------------------------------------------------------------------------------
+  launchOrSwitchMailSpring()
+  {
+    IfWinExist ahk_exe mailspring.exe
+    {
+      WinActivateBottom, ahk_exe mailspring.exe
+    }else  {
+      Run C:\Users\JEITI\AppData\Local\Mailspring\mailspring.exe
+    }
+    Return
+  }
+  #m::launchOrSwitchMailSpring()
   ;    return
   ;-------------------------------------------------------------------------------
 
@@ -247,6 +264,7 @@ seekForward5Secs()
     KeyWait, Capslock
     SetCapsLockState, off
 return
+
 CapsLock & g::
   OldClipboard:=ClipboardAll  ;Save existing clipboard.
   Clipboard:=""
@@ -259,7 +277,9 @@ Return
 ~CapsLock up::SetCapsLockState,Off
 #f::return
 #s::return
-#If GetKeyState("Capslock","P") ;hotkeys below this are only active when the Capslock key is Physically held down
+#If GetKeyState("Capslock","P")
+
+;hotkeys below this are only active when the Capslock key is Physically held down
 ;------------------------------------------------------------------------------
 ; with Windows key
 ;------------------------------------------------------------------------------
@@ -269,6 +289,13 @@ Return
 !f::Send,#{Right}    ;win + arrow right
 !d::Send,#{Down}     ;win + arrow down
 return
+
+;-------------------------------------------------------------------------------
+; with Shift key
+;-------------------------------------------------------------------------------
++1:: Run, https://online.uwl.ac.uk/ultra/courses/_174092_1/cl/outline
++2:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
++3:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
 
 ;------------------------------------------------------------------------------
 ; just Capslock
@@ -287,11 +314,11 @@ l:: seekForward5Secs()
 2:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
 3:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
 4::
-5:: Run,https://github.com/Orange-Power-Ltd/orange-power-mob/projects/1
+5:: Run,https://github.com/orgs/Orange-Power-Ltd/projects/2
 6:: Run,https://github.com/issues/assigned
 7:: Run,https://www.github.com
 8:: Run,https://www.youtube.com
-9:: Run, https://www.linkedin.com
+9:: Run,https://www.linkedin.com
 0::
 #If ; turns off the #If context above
  ;------------------------------------------------------------------------------
@@ -414,3 +441,6 @@ Return
   ;
   ;#IfWinActive Mezclador
   ;    F7::WinClose, A
+
+
+
