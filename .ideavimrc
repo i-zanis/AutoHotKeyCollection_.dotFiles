@@ -1,0 +1,47 @@
+"" Source your .vimrc
+"source ~/.vimrc
+
+let mapleader = " " " Make space the Leader key
+
+" https://github.com/JetBrains/ideavim/blob/master/doc/ideajoin-examples.md
+set ideajoin       " use IntelliJ's intelligent way of joining lines
+set showmode       " show vim mode at the bottom left
+set nu             " show numbers in the gutter
+set relativenumber " show relative numbers 1-9 in the gutter
+
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=3
+set visualbell
+set incsearch " Do incremental searching.
+
+" Make tab navigation easier
+noremap E gT
+noremap R gt
+
+set clipboard=unnamedplus
+set hls
+set highlightedyank " highlights the yank area
+let g:highlightedyank_highlight_duration = "1000"
+
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+" add navigation because of IntelliJ - IdeaVim keybindings conflicts
+nmap g] :action GotoImplementation<CR>
+nmap g[ :action GotoSuperMethod<CR>
+noremap ghc <ESC>:action CallHierarchy<CR>
+noremap ght <ESC>:action TypeHierarchy<CR>
+noremap ghm <ESC>:action MethodHierarchy<CR>
+
+" built-in navigation to navigated items works better than the Jumplist
+nnoremap <c-o> :action Back<cr>
+nnoremap <c-i> :action Forward<cr>
+" but preserve ideavim defaults
+nnoremap <C-S-o> <c-o>
+nnoremap <C-S-i> <c-i>
+
+" Ctrl F keybinding conflict with page down and built in search looks better
+nnoremap / :action Find<cr>
+" but preserve ideavim search
+nnoremap g/ /
