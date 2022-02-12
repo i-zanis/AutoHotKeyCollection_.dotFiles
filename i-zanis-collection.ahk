@@ -296,7 +296,41 @@ l:: seekForward5Secs()
 #If ; turns off the #If context above
  ;------------------------------------------------------------------------------
 
+sc046:: rapidFireLazerGun()
 
+;-------------------------------------------------------------------------------
+; Hold X button down -> press num(0-9) -> press Button ->
+; Repeat that button * num
+; You won't need to tab out 10 times on Chrome/IDE to reach the text field
+;-------------------------------------------------------------------------------
+rapidFireLazerGun() {
+    num         := ""                           ; Number of times to send
+    key         := ""                           ; Key to send
+
+    While GetKeyState("sc046", "P")             ; While button is held
+    {
+        Input, key, L1 T1.5                     ; Wait up to 1 sec for a  key
+                                                ; to be pushed
+        If (ErrorLevel = "Timeout")             ; If timeout occurs
+        {
+            If (num > 9 && key = "")            ; Check if number is double digits
+                Loop, % SubStr(num, 1, -1)      ; Assume last number is the key to send and...
+                    SendInput, % SubStr(num, 0) ; ...the numbers before it are the times to send it
+            Return
+        }
+        Else If (key >= 0 && key <= 9)          ; If key is a number
+        {
+            num .= key                          ; Append it to num
+            Continue                            ; Continue to get next key
+        }
+        Else If (num > 0 && key != "")          ; If there's a num and key
+            Loop, % num                         ; Loop num times
+                SendInput, % key                ; Sending key each time
+
+        Break
+    }
+Return
+}
   ;Fixing/repurposing Fn+function keys
 
 
