@@ -1,56 +1,75 @@
-// an example to create a new mapping `ctrl-y`
-// mapkey('<ctrl-y>', 'Show me the money', function() {
-//   Front.showPopup('a well-known phrase uttered by characters in the 1996 film Jerry Maguire (Escape to close).');
-// });
+const {
+  aceVimMap,
+  mapkey,
+  imap,
+  imapkey,
+  getClickableElements,
+  vmapkey,
+  map,
+  unmap,
+  vunmap,
+  cmap,
+  addSearchAlias,
+  removeSearchAlias,
+  tabOpenLink,
+  readText,
+  Clipboard,
+  Front,
+  Hints,
+  Visual,
+  RUNTIME
+} = api;
 
-// // an example to replace `T` with `gt`, click `Default mappings` to see how `T` works.
+// an example to create a new mapping `ctrl-y`
+mapkey('<ctrl-y>', 'Show me the money', function() {
+  Front.showPopup('a well-known phrase uttered by characters in the 1996 film Jerry Maguire (Escape to close).');
+});
+
+// an example to replace `T` with `gt`, click `Default mappings` to see how `T` works.
 // map('gt', 'T');
-//
-// // an example to remove mapkey `Ctrl-i`
+
+// an example to remove mapkey `Ctrl-i`
 // unmap('<ctrl-i>');
 
-// Characters when pressing F
-Hints.characters = '^zxawe123q$%"';
+map("ctrl-6", '6gt');
 
-settings.smoothScroll = false;
-
+Hints.setCharacters("azvcdewqg");
 // set theme
 settings.theme = `
 .sk_theme {
     font-family: Input Sans Condensed, Charcoal, sans-serif;
     font-size: 10pt;
-    background: #151320;
-    color: #F8F8F2;
+    background: #24272e;
+    color: #abb2bf;
 }
 .sk_theme tbody {
-    color: #80FFEA;
+    color: #fff;
 }
 .sk_theme input {
-    color: #FFFF80;
+    color: #d0d0d0;
 }
 .sk_theme .url {
-    color: #98c379;
+    color: #61afef;
 }
 .sk_theme .annotation {
-    color: #80FFEA;
+    color: #56b6c2;
 }
 .sk_theme .omnibar_highlight {
-    color: #FF80BF;
+    color: #528bff;
 }
 .sk_theme .omnibar_timestamp {
-    color: #80FFEA;
+    color: #e5c07b;
 }
 .sk_theme .omnibar_visitcount {
     color: #98c379;
 }
 .sk_theme #sk_omnibarSearchResult ul li:nth-child(odd) {
-    background: #22212C;
+    background: #303030;
 }
 .sk_theme #sk_omnibarSearchResult ul li.focused {
-    background: #9580FF;
+    background: #3e4452;
 }
 #sk_status, #sk_find {
     font-size: 20pt;
-}
-`;
+}`;
 // click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
