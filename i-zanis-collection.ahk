@@ -27,7 +27,7 @@ SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
   }
 return
 
-//TODO Turn these into functions
+; //TODO Turn these into functions
 ; Get Gimp
   launchOrSwitchGimp()
   {

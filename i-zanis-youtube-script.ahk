@@ -34,6 +34,8 @@ sendKeyOnChrome(key, title, tabName)
 		IfWinExist, %tabName%
 			break
 		ControlSend, , ^{PgUp} , %title%
+		; uncomment sleep if computer is slow on picking up the tab on change
+		; sleep 150
 	}
 	ControlSend, , %key% , %title%
  Return
