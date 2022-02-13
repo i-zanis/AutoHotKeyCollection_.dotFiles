@@ -4,15 +4,6 @@ SendMode Input              ; Recommended for new scripts due to its superior sp
 SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
 ; #Warn                     ; Enable warnings to assist with detecting common errors.
 
-; Youtube initial settings
-DetectHiddenWindows, On
-SetWorkingDir %A_ScriptDir%
-SetTitleMatchMode, 2
-controlID 		:= 0
-return
-
-
-
 ;----------------------------------------------------------------------------
   ;Always on top
 
@@ -36,6 +27,7 @@ return
   }
 return
 
+//TODO Turn these into functions
 ; Get Gimp
   launchOrSwitchGimp()
   {
@@ -93,7 +85,7 @@ return
   ;    return
 
 ; Get Windows Terminal
-; Use this don't rely on buggy PowerToys or default that opens 1+ instances
+; Use this, don't rely on buggy PowerToys or default that opens 1+ instances
   launchOrSwitchWT()
   {
     IfWinExist ahk_exe windowsterminal.exe
@@ -146,117 +138,6 @@ return
   ;-------------------------------------------------------------------------------
 
 
-;-------------------------------------------------------------------------------
-; Control inactive Chrome windows with a Youtube tab
-; If Tab is not active, it will loop through and change the tab
-; Very useful for educational videos
-; Youtube Default keybindings
-; j = 10 secs back,    left = 5 secs back
-; l = 10 secs forward, right = 5 secs forward
-; k = pause
-;-------------------------------------------------------------------------------
-
-;-------------------------------------------------------------------------------
-; Seek back 10 seconds
-;-------------------------------------------------------------------------------
-seekBack10Secs()
-{
-#IfWinNotActive, ahk_exe chrome.exe
-	ControlGet, controlID, Hwnd,,Chrome_RenderWidgetHostHWND1, Google Chrome
-	ControlFocus,,ahk_id %controlID%
-	IfWinExist, YouTube
-	{
-		ControlSend, Chrome_RenderWidgetHostHWND1, j , Google Chrome
-		return
-	}
-	Loop
-	{
-		IfWinExist, YouTube
-			break
-		ControlSend, , ^{PgUp} , Google Chrome
-		sleep 150
-	}
-	ControlSend, , j , Google Chrome
- Return
- #IfWinNotActive
-}
-
-;-------------------------------------------------------------------------------
-; Seek back 5 seconds
-;-------------------------------------------------------------------------------
-seekBack5Secs()
-{
-#IfWinNotActive, ahk_exe chrome.exe
-	ControlGet, controlID, Hwnd,,Chrome_RenderWidgetHostHWND1, Google Chrome
-	ControlFocus,,ahk_id %controlID%
-	IfWinExist, YouTube
-	{
-		ControlSend, Chrome_RenderWidgetHostHWND1, {left} , Google Chrome
-		return
-	}
-	Loop
-	{
-		IfWinExist, YouTube
-			break
-		ControlSend, , ^{PgUp} , Google Chrome
-		sleep 150
-	}
-	ControlSend, , {left} , Google Chrome
- Return
- #IfWinNotActive
-}
-
-;-------------------------------------------------------------------------------
-; Seek forward 10 seconds
-;-------------------------------------------------------------------------------
-seekForward10Secs()
-{
-#IfWinNotActive, ahk_exe chrome.exe
-	ControlGet, controlID, Hwnd,,Chrome_RenderWidgetHostHWND1, Google Chrome
-	ControlFocus,,ahk_id %controlID%
-	IfWinExist, YouTube
-	{
-		ControlSend, Chrome_RenderWidgetHostHWND1, l , Google Chrome
-		return
-	}
-	Loop
-	{
-		IfWinExist, YouTube
-			break
-		ControlSend, , ^{PgUp} , Google Chrome
-		sleep 150
-	}
-	ControlSend, , l , Google Chrome
- Return
- #IfWinNotActive
-}
-
-;-------------------------------------------------------------------------------
-; Seek forward 5 seconds
-;-------------------------------------------------------------------------------
-seekForward5Secs()
-{
-#IfWinNotActive, ahk_exe chrome.exe
-	ControlGet, controlID, Hwnd,,Chrome_RenderWidgetHostHWND1, Google Chrome
-	ControlFocus,,ahk_id %controlID%
-	IfWinExist, YouTube
-	{
-		ControlSend, Chrome_RenderWidgetHostHWND1, {right} , Google Chrome
-		return
-	}
-	Loop
-	{
-		IfWinExist, YouTube
-			break
-		ControlSend, , ^{PgUp} , Google Chrome
-		sleep 150
-	}
-	ControlSend, , {right} , Google Chrome
- Return
- #IfWinNotActive
-}
-
-
 
 ; This prevents capslock turning on successful attempts
 ~Capslock::
@@ -304,12 +185,9 @@ s::Send,{Left}              ;arrow left
 e::Send,{Up}                ;arrow up
 f::Send,{Right}             ;arrow right
 d::Send,{Down}              ;arrow down
-; Play/Pause videos eg. Youtube on a separate inactive window
-k::Send,{Media_Play_Pause}
-j:: seekBack5Secs()
-+j:: seekBack10Secs()
-l:: seekForward5Secs()
-+l:: seekForward10Secs()
+; Play/Pause videos e.g. Youtube/VLC on a separate inactive window
+; See other script for Youtube, requires media chrome://flags enabled
+k:: Send,{Media_Play_Pause}
 1:: Run, https://online.uwl.ac.uk/ultra/courses/_174092_1/cl/outline
 2:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
 3:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
