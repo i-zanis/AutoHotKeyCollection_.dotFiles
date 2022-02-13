@@ -19,7 +19,6 @@ return
 ; l = 10 secs forward, right = 5 secs forward
 ; k = pause
 ;-------------------------------------------------------------------------------
-
 sendKeyOnChrome(key, title, tabName)
 {
 #IfWinNotActive, ahk_exe chrome.exe
