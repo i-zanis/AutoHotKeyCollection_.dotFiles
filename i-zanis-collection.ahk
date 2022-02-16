@@ -4,6 +4,194 @@ SendMode Input              ; Recommended for new scripts due to its superior sp
 SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
 ; #Warn                     ; Enable warnings to assist with detecting common errors.
 
+
+
+
+
+; This prevents capslock turning on successful attempts
+~Capslock::
+    SetCapsLockState, on
+    KeyWait, Capslock
+    SetCapsLockState, off
+return
+
+CapsLock & g::
+  OldClipboard:=ClipboardAll  ;Save existing clipboard.
+  Clipboard:=""
+  Send ^c                     ;Copy selected test to clipboard
+  ClipWait 0
+    Run % "http://www.google.com/search?q=" Clipboard
+  Clipboard:=OldClipboard
+Return
+
+~CapsLock up::SetCapsLockState,Off
+#f::return
+#s::return
+#If GetKeyState("Capslock","P")
+
+;hotkeys below this are only active when the Capslock key is Physically held down
+;------------------------------------------------------------------------------
+; with Windows key
+;------------------------------------------------------------------------------
+; These move the windows
+!s::Send,#{Left}     ;win + arrow left
+!e::Send,#{Up}       ;win + arrow up
+!f::Send,#{Right}    ;win + arrow right
+!d::Send,#{Down}     ;win + arrow down
+return
+
+;-------------------------------------------------------------------------------
+; with Shift key
+;-------------------------------------------------------------------------------
++1:: Run, https://online.uwl.ac.uk/ultra/courses/_174092_1/cl/outline
++2:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
++3:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
++0:: Send +{Home} ; Shift + Home line selection
+;------------------------------------------------------------------------------
+; just Capslock
+;------------------------------------------------------------------------------
+s::Send,{Left}              ;arrow left
+e::Send,{Up}                ;arrow up
+f::Send,{Right}             ;arrow right
+d::Send,{Down}              ;arrow down
+; Play/Pause videos e.g. Youtube/VLC on a separate inactive window
+; See other script for Youtube, requires chrome://flags media enabled
+k:: Send,{Media_Play_Pause}
+1::
+2::
+; Capslock + num then key = key * num times
+; Good use with Tab on multiple fields
+3:: rapidFireKey("3")
+4:: rapidFireKey("4")
+5:: rapidFireKey("5")
+6:: rapidFireKey("6")
+7:: rapidFireKey("7")
+8:: rapidFireKey("8")
+9:: rapidFireKey("9")
+0:: Send {Home} ; Home
+$:: Send,{End} ; End
+Space::VimStyle()
+*esc::ExitApp
+#If ; turns off the #If context above
+ ;------------------------------------------------------------------------------
+
+;-------------------------------------------------------------------------------
+; Hold X button down -> press num(0-9) -> press Button ->
+; Repeat that button * num
+; You won't need to tab out 10 times on Chrome/IDE to reach "THAT" field
+;-------------------------------------------------------------------------------
+rapidFireLazerGun() {
+    num         := ""                           ; Number of times to send
+    key         := ""                           ; Key to send
+
+    While GetKeyState("sc046", "P")             ; While button is held
+    {
+        Input, key, L1 T1.0                     ; Wait up to 1 sec for a  key
+                                                ; to be pushed
+        If (ErrorLevel = "Timeout")             ; If timeout occurs
+        {
+            If (num > 9 && key = "")            ; Check if number is double digits
+                Loop, % SubStr(num, 1, -1)      ; Assume last number is the key to send and...
+                    SendInput, % SubStr(num, 0) ; ...the numbers before it are the times to send it
+            Return
+        }
+        Else If (key >= 0 && key <= 9)          ; If key is a number
+        {
+            num .= key                          ; Append it to num
+            Continue                            ; Continue to get next key
+        }
+        Else If (num > 0 && key != "")          ; If there's a num and key
+            Loop, % num                         ; Loop num times
+                SendInput, % key                ; Sending key each time
+
+        Break
+    }
+Return
+}
+
+;-------------------------------------------------------------------------------
+; Fire a key * times passed as a parameter
+;-------------------------------------------------------------------------------
+rapidFireKey(times) {
+    num         := % times                      ; Number of times to send
+    key         := ""                           ; Key to send
+        Input, key, L1 T1.0                     ; Wait up to 1 sec for a  key
+        If (num > 0 && key != "")               ; num not 0 and a key is pressed
+            Loop, % num                         ; Loop num times
+                SendInput, % key                ; Send key each time
+Return
+}
+
+;-------------------------------------------------------------------------------
+; Activate through a key combo (e.g Capslock + Space) then type the code to run
+; the action from the table
+;-------------------------------------------------------------------------------
+VimStyle()
+{
+    ; Objet with all required codes as keys
+    ; Each key key has an object associated with it with name + run value
+    Static table := {"ghf":{name:"GitHub", run:"http://www.github.com"}
+                    ,"ghk":{name:"GitHub Issues", run:"https://github.com/orgs/Orange-Power-Ltd/projects/2"}
+                    ,"gha":{name:"GitHub Assigned", run:"https://github.com/issues/assigned"}
+                    ,"ghp":{name:"GitHub Profile", run:"https://github.com/i-zanis"}
+                    ,"cal":{name:"Calculator", run:"calc.exe"}
+                    ,"u1":{name:"FUP", run:"https://online.uwl.ac.uk/ultra/courses/_177664_1/cl/outline"}
+                    ,"u2":{name:"HCC", run:"https://online.uwl.ac.uk/ultra/courses/_178279_1/cl/outline"}
+                    ,"u3":{name:"GPR", run:"https://online.uwl.ac.uk/ultra/courses/_178569_1/cl/outline"}
+                    ,"yt":{name:"Youtube", run:"https://youtube.com"}
+                    ,"lin":{name:"Linkedin", run:"linkedin.com/notifications/"}
+                    ,"red": {name:"Reddit", run:"http://old.reddit.com"}}
+    ; var to store a list of codes
+    ; Static == permanent
+    Static code_list := ""
+
+    ; if code list === blank -> build one more time
+    If (code_list = "")
+        ; Loop through the table
+        For code, value in table
+            ; Append code + colon + name property from the subarray + new
+            ; line char
+            code_list .= code ": " value.name "`n"
+
+    ; Blank var code that updates each time a key is pressed
+    code := ""
+    Loop
+    {
+        ; The code list from your initial holding of Space
+;        If GetKeyState("Space", "P")
+;        {
+;            ToolTip, % code_list
+;            ; When you release Space, it'll let the code continue
+;            KeyWait, Space
+;        }
+
+        ; Update to show the current typed keys
+        ToolTip, % "Code: " code
+
+        ; Input gets input from the keyboard
+        ; L1 = Get 1 character
+        ; T1 = Wait up to 1 second for the user to type something
+        Input, let, L1 T1
+
+        ; If 1 second goes by without input, timeout occurs
+        If (ErrorLevel == "Timeout")
+            ; Break loop because the user waited too long
+            Break
+        ; If no timeout occurred, append the last letter typed to the code
+        ; Check if the table has the updated code as a key
+        If !table[(code .= let)]
+            ; If not, continue to the top of the loop
+            Continue
+        ; But if the code is a table key, use that key .run value to run
+        ; whatever you have associated with that code
+        Run, % table[code].run
+        ; Break out of the loop after running it
+        break
+    }
+    ; Blank out the tooltip when exiting the function
+    ToolTip
+    Return
+}
 ;----------------------------------------------------------------------------
   ;Always on top
 
@@ -136,106 +324,6 @@ return
   #m::launchOrSwitchMailSpring()
   ;    return
   ;-------------------------------------------------------------------------------
-
-
-
-; This prevents capslock turning on successful attempts
-~Capslock::
-    SetCapsLockState, on
-    KeyWait, Capslock
-    SetCapsLockState, off
-return
-
-CapsLock & g::
-  OldClipboard:=ClipboardAll  ;Save existing clipboard.
-  Clipboard:=""
-  Send ^c                     ;Copy selected test to clipboard
-  ClipWait 0
-    Run % "http://www.google.com/search?q=" Clipboard
-  Clipboard:=OldClipboard
-Return
-
-~CapsLock up::SetCapsLockState,Off
-#f::return
-#s::return
-#If GetKeyState("Capslock","P")
-
-;hotkeys below this are only active when the Capslock key is Physically held down
-;------------------------------------------------------------------------------
-; with Windows key
-;------------------------------------------------------------------------------
-; These move the windows
-!s::Send,#{Left}     ;win + arrow left
-!e::Send,#{Up}       ;win + arrow up
-!f::Send,#{Right}    ;win + arrow right
-!d::Send,#{Down}     ;win + arrow down
-return
-
-;-------------------------------------------------------------------------------
-; with Shift key
-;-------------------------------------------------------------------------------
-+1:: Run, https://online.uwl.ac.uk/ultra/courses/_174092_1/cl/outline
-+2:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
-+3:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
-
-;------------------------------------------------------------------------------
-; just Capslock
-;------------------------------------------------------------------------------
-s::Send,{Left}              ;arrow left
-e::Send,{Up}                ;arrow up
-f::Send,{Right}             ;arrow right
-d::Send,{Down}              ;arrow down
-; Play/Pause videos e.g. Youtube/VLC on a separate inactive window
-; See other script for Youtube, requires media chrome://flags enabled
-k:: Send,{Media_Play_Pause}
-1:: Run, https://online.uwl.ac.uk/ultra/courses/_174092_1/cl/outline
-2:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
-3:: Run,https://online.uwl.ac.uk/ultra/courses/_174555_1/cl/outline
-4::
-5:: Run,https://github.com/orgs/Orange-Power-Ltd/projects/2
-6:: Run,https://github.com/issues/assigned
-7:: Run,https://www.github.com
-8:: Run,https://www.youtube.com
-9:: Run,https://www.linkedin.com
-0::
-#If ; turns off the #If context above
- ;------------------------------------------------------------------------------
-
-sc046:: rapidFireLazerGun()
-
-;-------------------------------------------------------------------------------
-; Hold X button down -> press num(0-9) -> press Button ->
-; Repeat that button * num
-; You won't need to tab out 10 times on Chrome/IDE to reach the text field
-;-------------------------------------------------------------------------------
-rapidFireLazerGun() {
-    num         := ""                           ; Number of times to send
-    key         := ""                           ; Key to send
-
-    While GetKeyState("sc046", "P")             ; While button is held
-    {
-        Input, key, L1 T1.5                     ; Wait up to 1 sec for a  key
-                                                ; to be pushed
-        If (ErrorLevel = "Timeout")             ; If timeout occurs
-        {
-            If (num > 9 && key = "")            ; Check if number is double digits
-                Loop, % SubStr(num, 1, -1)      ; Assume last number is the key to send and...
-                    SendInput, % SubStr(num, 0) ; ...the numbers before it are the times to send it
-            Return
-        }
-        Else If (key >= 0 && key <= 9)          ; If key is a number
-        {
-            num .= key                          ; Append it to num
-            Continue                            ; Continue to get next key
-        }
-        Else If (num > 0 && key != "")          ; If there's a num and key
-            Loop, % num                         ; Loop num times
-                SendInput, % key                ; Sending key each time
-
-        Break
-    }
-Return
-}
   ;Fixing/repurposing Fn+function keys
 
 
