@@ -19,7 +19,6 @@ const {
   Visual,
   RUNTIME
 } = api;
-
 // an example to create a new mapping `ctrl-y`
 mapkey('<ctrl-y>', 'Show me the money', function() {
   Front.showPopup('a well-known phrase uttered by characters in the 1996 film Jerry Maguire (Escape to close).');
@@ -31,9 +30,14 @@ mapkey('<ctrl-y>', 'Show me the money', function() {
 // an example to remove mapkey `Ctrl-i`
 // unmap('<ctrl-i>');
 
-map("ctrl-6", '6gt');
-
+map("ctrl-6", "6T");
+map("gt","ctrl-tab" );
+api.iunmap(":");
+api.unmap("e");
+api.unmap("d");
+api.unmap("x");
 Hints.setCharacters("azvcdewqg");
+
 // set theme
 settings.theme = `
 .sk_theme {
