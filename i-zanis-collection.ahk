@@ -78,7 +78,7 @@ Space::VimStyle()
 ;-------------------------------------------------------------------------------
 ; Hold X button down -> press num(0-9) -> press Button ->
 ; Repeat that button * num
-; You won't need to tab out 10 times on Chrome/IDE to reach "THAT" field
+; No need to press tab 10 times on Chrome/IDE to reach "THAT" field
 ;-------------------------------------------------------------------------------
 rapidFireLazerGun() {
     num         := ""                           ; Number of times to send
@@ -108,6 +108,11 @@ rapidFireLazerGun() {
     }
 Return
 }
+
+SC130::Send {Volume_Up 5}    ; increase sound level
+#SC130::Send {Volume_Up 1}   ; increase sound level
+SC12E::Send {Volume_Down 5}  ; decrease sound level
+#SC12E::Send {Volume_Down 1} ; decrease sound level
 
 ;-------------------------------------------------------------------------------
 ; Fire a key * times passed as a parameter
