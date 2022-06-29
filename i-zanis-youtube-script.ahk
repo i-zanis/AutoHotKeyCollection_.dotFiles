@@ -29,15 +29,8 @@ sendKeyOnChrome(key, title, tabName)
 		ControlSend, Chrome_RenderWidgetHostHWND1, %key%, %title%
 		return
 	}
-	Loop, 20
-	{
-		IfWinExist, %tabName%
-			break
-		ControlSend, , ^{PgUp} , %title%
-		; uncomment sleep if computer is slow on picking up the tab on change
-		; sleep 150
-	}
 	ControlSend, , %key% , %title%
+	ControlSend, ahk_parent, %key%, ahk_class SUMATRA_PDF_FRAME
  Return
  #IfWinNotActive
 }
